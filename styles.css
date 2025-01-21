@@ -160,9 +160,6 @@ div .letter.current::before {
     padding: 20px;
     border-radius: 10px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     z-index: 10;
 }
 
@@ -171,7 +168,9 @@ div .letter.current::before {
 }
 
 #game-over.visible {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #restartBtn {
@@ -181,11 +180,80 @@ div .letter.current::before {
     color: var(--primaryColor);
 }
 
-#final-wpm{
+#final-wpm {
     color: var(--primaryColor);
 }
 
-
 #game.hidden {
     display: none;
+}
+
+
+
+/* Ocultar el header cuando el game-over está visible */
+#game-over.visible ~ #header {
+    display: none;
+}
+
+/* Ocultar el scoreboard por defecto */
+#scoreboard {
+    display: none;
+}
+
+/* Mostrar el scoreboard cuando el game-over está visible */
+#game-over.visible ~ #scoreboard {
+    display: block;
+}
+
+/*PUNTAJES*/
+#scoreboard {
+    display: none;
+    margin-top: 300px;
+    text-align: left;
+}
+
+/* Mostrar el scoreboard cuando el game-over está visible */
+#game-over.visible + #scoreboard {
+    display: block;
+}
+
+#scoreboard table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#scoreboard th, #scoreboard td {
+    border: 1px solid var(--primaryColor);
+    padding: 10px;
+    color: var(--textPrimary);
+}
+
+#scoreboard th {
+    background-color: var(--primaryColor);
+    color: var(--bgColor);
+}
+
+
+
+
+/*LANGUAGE BUTTONS*/
+#language-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.language-button {
+    width: 100px;
+    height: 100px;
+    background-color: var(--bgColor);
+    color: var(--textPrimary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
 }
