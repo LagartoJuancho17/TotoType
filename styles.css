@@ -79,6 +79,9 @@ div.word{
     margin: 0 5px;
     position: relative;
 }
+.letter{
+    position: relative; 
+}
 .letter.correct{
     color: #fff;
 }
@@ -97,12 +100,12 @@ div.word{
     }
 }
 
-div .letter.current::before{
-    content: "";
+div .letter.current::before {
+  content: "";
   position: absolute;
-  left: -3px; /* Ubicar la barra a la derecha del texto */
+  left: -3px; /* Ubicar la barra a la izquierda de la letra */
   top: 0;
-  height: 100%; /* Hacer la barra de la misma altura que el texto */
+  height: 100%; /* Hacer la barra de la misma altura que la letra */
   width: 0.1em; /* Establecer el grosor de la barra */
   background-color: var(--primaryColor);
   animation: titileo 1s infinite; /* Animación de titileo */
@@ -148,3 +151,41 @@ div .letter.current::before{
     display: none;
 }
     */
+
+#game-over {
+    display: none;
+    text-align: center;
+    background-color: var(--bgColor);
+    color: var(--textPrimary);
+    padding: 20px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+#game-over.hidden {
+    display: none;
+}
+
+#game-over.visible {
+    display: block;
+}
+
+#restartBtn {
+    cursor: pointer;
+    background-color: var(--bgColor);
+    font-size: 2rem; /* Ajusta el tamaño del ícono */
+    color: var(--primaryColor);
+}
+
+#final-wpm{
+    color: var(--primaryColor);
+}
+
+
+#game.hidden {
+    display: none;
+}
