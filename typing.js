@@ -5,18 +5,38 @@ window.timer = null;
 window.gameStart = null;
 window.pauseTime = 0;
 
+const audioFiles = [
+  'audio1.mp3',
+  'audio2.mp3',
+  'audio3.mp3',
+  'audio4.mp3',
+  'audio5.mp3',
+]
+
+// Función para reproducir un audio al azar
+function playRandomAudio() {
+    // Elegir un índice aleatorio del arreglo
+    const randomIndex = Math.floor(Math.random() * audioFiles.length);
+    const randomAudio = new Audio(audioFiles[randomIndex]);
+    randomAudio.play();
+}
+
+function playClickSound(){
+  clickSound.play();
+}
 /*FUNCIONES PARA CREAR Y ELIMINAR CLASES */
 
-function addClass(el,name) {
-  el.className += ' '+name;
-} 
-function removeClass(el,name) {
-  el.className = el.className.replace(name,'');
+function addClass(el, name) {
+  el.classList.add(name);
 }
+function removeClass(el, name) {
+  el.className = el.className.replace(name, '');
+}
+
 
 /*FUNCION PARA DAR PALABRA RANDOM */
 function randomWord() {
-  const randomIndex = Math.ceil(Math.random() * wordsCount);
+  const randomIndex = Math.ceil(Math.random() * wordsCount); //.ceil redondea para arriba
   return words[randomIndex - 1];
 }
 
@@ -26,7 +46,7 @@ function formatWord(word) {
 }
 
 function newGame() {
-    console.log('Game reset and ready to start');
+    console.log('Juego reseteado y listo para empezar');
 
     //Elimna la clase "over" antes de reiniicar
     removeClass(document.getElementById('game'),'over')
@@ -75,6 +95,9 @@ function gameOver() {
 }
 
 document.getElementById('game').addEventListener('keyup', ev => {
+
+  playRandomAudio();
+  
   const key = ev.key;
   const currentWord = document.querySelector('.word.current');
   const currentLetter = document.querySelector('.letter.current');
@@ -169,11 +192,12 @@ document.getElementById('game').addEventListener('keyup', ev => {
   }
 
   // move cursor
+  /*
   const nextLetter = document.querySelector('.letter.current');
   const nextWord = document.querySelector('.word.current');
   const cursor = document.getElementById('cursor');
   cursor.style.top = (nextLetter || nextWord).getBoundingClientRect().top + 2 + 'px';
-  cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? 'left' : 'right'] + 'px';
+  cursor.style.left = (nextLetter || nextWord).getBoundingClientRect()[nextLetter ? 'left' : 'right'] + 'px';*/
 });
 
 document.getElementById('newGameBtn').addEventListener('click', () => {

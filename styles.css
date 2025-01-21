@@ -52,6 +52,7 @@ div#game{
     height:105px;
     overflow: hidden;
     position: relative;
+    background-color:#333;
 }
 div#game:focus{
     outline:0;
