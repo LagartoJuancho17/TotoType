@@ -194,7 +194,10 @@ div .letter.current::before {
 #game-over.visible ~ #header {
     display: none;
 }
-
+/*Ocultar los botones de idioma cunado el game-over esta*/
+#gameme-over.visible ~ #language-buttons {
+    display: none;
+}
 /* Ocultar el scoreboard por defecto */
 #scoreboard {
     display: none;
