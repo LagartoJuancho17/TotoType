@@ -133,6 +133,7 @@ function newGameWPM() {
     window.pauseTime = 0;
 }
 
+
 function getWpm() {
   const words = [...document.querySelectorAll('.word')];
   const lastTypedWord = document.querySelector('.word.current');
@@ -294,6 +295,7 @@ document.getElementById('game').addEventListener('keyup', ev => {
       removeClass(currentLetter, 'current');
     }
     addClass(currentWord.nextSibling.firstChild, 'current');
+    levelUp();
   }
 
   if (isBackspace) {
@@ -343,3 +345,212 @@ document.getElementById('newGameBtn').addEventListener('click', () => {
 });
 
 newGame();
+
+
+
+/*NIVEL DE JUEGO */
+let level = 1;
+let levelScore = 0;
+let levelTime = 15000; // Tiempo inicial en milisegundos
+let cantidadPalabrasPorJuego = 10;
+
+function startLevelMode() {
+    level = 1;
+    levelScore = 0;
+    levelTime = 15000; // Reiniciar el tiempo inicial
+    startNewLevel();
+}
+
+function startNewLevel() {
+    const wordsContainer = document.getElementById('words');
+    wordsContainer.innerHTML = '';
+    wordsContainer.style.marginTop = '0px';
+
+    // Generar nuevas palabras
+    for (let i = 0; i < cantidadPalabrasPorJuego; i++) {
+        wordsContainer.innerHTML += formatWord(randomWord());
+    }
+
+    addClass(document.querySelector('.word'), 'current');
+    addClass(document.querySelector('.letter'), 'current');
+    document.getElementById('info').innerHTML = (levelTime / 1000) + '';
+    clearInterval(window.timer);
+    
+    window.timer = setInterval(() => {
+        if (!window.gameStart) {
+            window.gameStart = (new Date()).getTime();
+        }
+        const currentTime = (new Date()).getTime();
+        const msPassed = currentTime - window.gameStart;
+        const sPassed = Math.round(msPassed / 1000);
+        const sLeft = Math.round((levelTime / 1000) - sPassed);
+        if (sLeft <= 0) {
+            gameOverLevelMode();
+            return;
+        }
+        document.getElementById('info').innerHTML = sLeft + '';
+    }, 1000);
+}
+
+function levelUp() {
+    if (checkLevelCompletion()) {
+      console.log("Se subio el lvl")
+        levelScore += 100 + level; // Sumar 100 puntos más el nivel actual
+        level++; // Incrementar el nivel
+        console.log("Nivel actual:" + level)
+        const currentTime = (new Date()).getTime();
+        const msPassed = currentTime - window.gameStart;
+        const sPassed = Math.round(msPassed / 1000);
+        levelTime = levelTime-1; // Reducir el tiempo en 3 segundos por nivel, mínimo 5 segundos
+        startNextLevel(); // Iniciar el siguiente nivel
+    }
+}
+
+function startNextLevel() {
+    levelTime = levelTime-3; // Reducir el tiempo en 3 segundos por nivel, mínimo 5 segundos
+    startNewLevel();
+}
+
+function gameOverLevelMode() {
+    clearInterval(window.timer);
+    addClass(document.getElementById('game'), 'over');
+    document.getElementById('info').innerHTML = `Score: ${levelScore}`;
+    
+    // Ocultar el div game y mostrar la pantalla de fin de nivel en su lugar
+    const gameDiv = document.getElementById('game');
+    const levelEndScreen = document.getElementById('level-end');
+    const header = document.getElementById('header');
+    const languageButtons = document.getElementById('language-buttons');
+    
+    // Ajustar la posición y tamaño del level-end para que coincida con game
+    levelEndScreen.style.top = gameDiv.offsetTop + 'px';
+    levelEndScreen.style.left = gameDiv.offsetLeft + 'px';
+    levelEndScreen.style.width = gameDiv.offsetWidth + 'px';
+    levelEndScreen.style.height = gameDiv.offsetHeight + 'px';
+    
+    addClass(gameDiv, 'hidden');
+    document.getElementById('current-score').innerHTML = `Score: ${levelScore}`;
+    levelEndScreen.style.display = 'block';
+    removeClass(levelEndScreen, 'hidden');
+    addClass(levelEndScreen, 'visible');
+    
+    // Ocultar el header y los botones de idioma
+    header.style.display = 'none';
+    languageButtons.style.display = 'none';
+}
+
+document.getElementById('levelModeBtn').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('newGameBtn').classList.remove('active');
+    startLevelMode();
+});
+
+document.getElementById('next-level-button').removeEventListener('click', startNextLevelHandler);
+document.getElementById('next-level-button').addEventListener('click', startNextLevelHandler);
+
+function startNextLevelHandler() {
+    const levelEndScreen = document.getElementById('level-end');
+    const gameDiv = document.getElementById('game');
+    const header = document.getElementById('header');
+    const languageButtons = document.getElementById('language-buttons');
+
+    // Ocultar la pantalla de fin de nivel
+    levelEndScreen.style.display = 'none';
+    removeClass(levelEndScreen, 'visible');
+    addClass(levelEndScreen, 'hidden');
+
+    // Mostrar el juego
+    removeClass(gameDiv, 'hidden');
+
+    // Mostrar el header y los botones de idioma
+    header.style.display = 'block';
+    languageButtons.style.display = 'flex';
+
+    // Iniciar el siguiente nivel
+    startNextLevel();
+}
+
+document.getElementById('game').addEventListener('keyup', ev => {
+    const isSpace = ev.code === 'Space';
+    if (isSpace) {
+        if (document.querySelector('.word.current') === null) {
+            levelUp();
+        }
+    }
+});
+
+function checkLevelCompletion() {
+    // Verificar si todas las palabras han sido escritas correctamente
+    const words = document.querySelectorAll('.word');
+    for (let word of words) {
+        const letters = word.querySelectorAll('.letter');
+        for (let letter of letters) {
+            if (!letter.classList.contains('correct')) {
+                return false;
+            }
+        }
+    }
+    console.log("todo completo")
+    return true;
+}
+
+
+document.getElementById('next-level-button').addEventListener('click', function() {
+    const levelEndScreen = document.getElementById('level-end');
+    const gameDiv = document.getElementById('game');
+    const header = document.getElementById('header');
+    const languageButtons = document.getElementById('language-buttons');
+
+    // Ocultar la pantalla de fin de nivel
+    levelEndScreen.style.display = 'none';
+    removeClass(levelEndScreen, 'visible');
+    addClass(levelEndScreen, 'hidden');
+
+    // Mostrar el juego
+    removeClass(gameDiv, 'hidden');
+
+    // Mostrar el header y los botones de idioma
+    header.style.display = 'block';
+    languageButtons.style.display = 'flex';
+
+    // Iniciar el siguiente nivel
+    startNextLevel();
+});
+
+function startNextLevel() {
+    levelTime = levelTime-3; // Reducir el tiempo en 3 segundos por nivel, mínimo 5 segundos
+    startNewLevel();
+}
+
+function startNewLevel() {
+    const wordsContainer = document.getElementById('words');
+    wordsContainer.innerHTML = '';
+    wordsContainer.style.marginTop = '0px';
+
+    // Generar nuevas palabras
+    for (let i = 0; i < cantidadPalabrasPorJuego; i++) {
+        wordsContainer.innerHTML += formatWord(randomWord());
+    }
+
+    addClass(document.querySelector('.word'), 'current');
+    addClass(document.querySelector('.letter'), 'current');
+    document.getElementById('info').innerHTML = (levelTime / 1000) + '';
+    clearInterval(window.timer);
+    
+    window.timer = setInterval(() => {
+        if (!window.gameStart) {
+            window.gameStart = (new Date()).getTime();
+        }
+        const currentTime = (new Date()).getTime();
+        const msPassed = currentTime - window.gameStart;
+        const sPassed = Math.round(msPassed / 1000);
+        const sLeft = Math.round((levelTime / 1000) - sPassed);
+        if (sLeft <= 0) {
+            gameOverLevelMode();
+            return;
+        }
+        document.getElementById('info').innerHTML = sLeft + '';
+    }, 1000);
+}
+
+// Elimina el listener duplicado

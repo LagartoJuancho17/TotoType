@@ -42,9 +42,9 @@ h1 svg, h1 span {
     color: var(--primaryColor);
 }
 button{
-    background: rgba(255,255,255,.2);
+    background: var(--textSecondary);
     border:0;
-    color: rgba(255,255,255,.5);
+    color: var(--textPrimary);
     padding: 5px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -58,7 +58,7 @@ div#game{
     height:105px;
     overflow: hidden;
     position: relative;
-    background-color:#333;
+    background-color:var(--bgColor);
 }
 div#game:focus{
     outline:0;
@@ -89,7 +89,7 @@ div.word{
     position: relative; 
 }
 .letter.correct{
-    color: #fff;
+    color: var(--textPrimary);
 }
 .letter.incorrect{
     color: #f55;
@@ -164,8 +164,6 @@ div.word{
 #game.hidden {
     display: none;
 }
-
-
 
 /* Ocultar el header cuando el game-over está visible */
 #game-over.visible ~ #header {
