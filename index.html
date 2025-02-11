@@ -9,7 +9,17 @@
 
 </head>
 <body>
-    <main>
+    <form id="form-login">
+  <div class="login-container">
+    <h2>Iniciar sesión</h2>
+    <div class="form-group">
+      <label for="username">Nombre de usuario:</label>
+      <input type="text" id="username" name="username" required minlength="6" maxlength="16" placeholder="Ingrese su nombre de usuario">
+    </div>
+    <button id="btn-login">Iniciar sesión</button>
+  </div>
+</form>
+    <main id="completo">
         <h1>
             TOTOTYPE
         </h1>
@@ -30,9 +40,10 @@
             <div id="english" class="language-button">English</div>
             <div id="spanish" class="language-button">Español</div>
         </div>
+        
 
         <div id="game-over" class="hidden">
-            <h2>lagartoJuancho</h2>
+            <h2 id="username-display"></h2>
             <p id="final-wpm"></p>
             <button id="restartBtn"><i class="fa-solid fa-arrows-rotate"></i></button>
         </div>
@@ -56,6 +67,14 @@
             <p id="current-score"></p>
             <button id="next-level-button">Reiniciar Nivel</button>
         </div>
+        <details>
+            <summary>¿Cómo funcionan los modos de juego?</summary>
+            <p>El juego tiene dos modos: WPM MODE y LEVEL MODE.</p>
+            <p><strong>WPM MODE:</strong> 
+                En este modo, el objetivo es escribir el texto lo más rápido posible durante un tiempo determinado (20 segundos). El juego te mostrará tu velocidad de escritura en palabras por minuto (WPM) al final del juego.</p>
+            <p><strong>LEVEL MODE:</strong>
+                En este modo, el objetivo es completar un nivel escribiendo un texto determinado. Cada nivel tiene un tiempo límite y un texto que debes escribir correctamente. Si lo logras, avanzarás al siguiente nivel (clickear espacio). El juego te mostrará tu puntuación al final de cada nivel.</p>
+</details>
     </main>
     <script src="typing.js"></script>
 </body>
