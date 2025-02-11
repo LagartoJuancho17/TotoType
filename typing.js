@@ -415,10 +415,14 @@ function startNewLevel() {
     }
   });
 
+  // Enfocar el juego para permitir escribir
+  setTimeout(() => {
+    document.getElementById('game').focus();
+  }, 100);
 }
 
 function startNextLevel() {
-  levelTime = Math.max(levelTime - 1000, 5000); // Reducir el tiempo en 1 segundos por nivel, mínimo 5 segundos
+  levelTime = Math.max(levelTime - 1000, 5000); // Reducir el tiempo en 3 segundos por nivel, mínimo 5 segundos
   window.gameStart = null; // Reiniciar el tiempo de inicio del juego
   startNewLevel();
 }
@@ -490,16 +494,16 @@ function startNextLevelHandler() {
     startNextLevel();
 }
 
-document.getElementById('next-level-button').removeEventListener('click', startNextLevelHandler); // Evitar que se dupliquen los eventos
-document.getElementById('next-level-button').addEventListener('click', startNextLevelHandler); 
+document.getElementById('next-level-button').removeEventListener('click', startNextLevelHandler);
+document.getElementById('next-level-button').addEventListener('click', startNextLevelHandler);
 
 // Pase de nivel si se presiona el espacio
 document.getElementById('game').addEventListener('keyup', ev => {
-    const isSpace = ev.code === 'Space'; // Verificar si la tecla presionada es el espacio 
+    const isSpace = ev.code === 'Space';
     if (isSpace) {
-        if (document.querySelector('.word.current') === null) { // Si no hay palabra actual 
+        if (document.querySelector('.word.current') === null) {
             levelUp();
-        } else if (checkLevelCompletion()) { // Si la palabra actual es correcta 
+        } else if (checkLevelCompletion()) {
             levelUp();
         }
     }
