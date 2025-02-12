@@ -27,11 +27,11 @@ window.gameStart = null;
 window.pauseTime = 0;
 
 const audioFiles = [
-  '/audios/audio1.mp3',
-  '/audios/audio2.mp3',
-  '/audios/audio3.mp3',
-  '/audios/audio4.mp3',
-  '/audios/audio5.mp3',
+  './audios/audio1.mp3',
+  './audios/audio2.mp3',
+  './audios/audio3.mp3',
+  './audios/audio4.mp3',
+  './audios/audio5.mp3',
 ]
 
 const wordsPortuguese = 'o relogio cantava cancaoes de papel enquanto as nuvens discutiam sobre o preco das sandias invisiveis um peixe com chapeu de bolinhas tentava abrir uma porta que nunca existiu mas o vento sussurrava segredos de cores no topo de uma montanha plana os sapatos dancavam com entusiasmo sobre uma poca de fogo frio os caracois velozes apostavam corridas contra sombras distraidas enquanto uma arvore dormindo sonhava em voar as palavras derretidas caiam do ceu como chuva de tinta e um espelho sem reflexo perguntava por que os guarda chuvas nao sabiam nadar no ar'.split(' ');
