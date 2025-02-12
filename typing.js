@@ -270,9 +270,9 @@ document.getElementById('game').addEventListener('keyup', ev => { // Evento para
   if (!window.timer && isLetter) {
     window.timer = setInterval(() => { 
       if (!window.gameStart) { //Si no hay un tiempo de inicio
-        window.gameStart = (new Date()).getTime(); //Obtiene el tiempo actual en milisegundos 
+        window.gameStart = performance.now(); //Obtiene el tiempo actual en milisegundos 
       }
-      const currentTimeFF = (new Date()).getTime(); 
+      const currentTimeFF = performance.now();
       const msPassed = currentTimeFF - window.gameStart; //Obtiene la diferencia de tiempo en milisegundos 
       const sPassed = Math.round(msPassed / 1000); //Obtiene la diferencia de tiempo en segundos redondeado a la unidad más cercana 
       const sLeft = Math.round((gameTime / 1000) - sPassed); //Obtiene el tiempo restante en segundos redondeado a la unidad más cercana
@@ -305,9 +305,9 @@ document.getElementById('game').addEventListener('keyup', ev => { // Evento para
 
   if (isSpace) {
     if (expected !== ' ') {
-      const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')];
-      lettersToInvalidate.forEach(letter => {
-        addClass(letter, 'incorrect');
+      const lettersToInvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')]; // Obtiene todas las letras de la palabra actual que no son correctas
+      lettersToInvalidate.forEach(letter => { 
+        addClass(letter, 'incorrect'); // Agrega la clase incorrecta a cada letra
       });
     }
     removeClass(currentWord, 'current');
@@ -377,7 +377,7 @@ function startLevelMode() {
     level = 1;
     levelScore = 0;
     levelTime = 15000; // Reiniciar el tiempo inicial
-    startNewLevel();
+    startNewLevel(); 
 }
 
 function startNewLevel() {
@@ -396,11 +396,11 @@ function startNewLevel() {
   document.getElementById('info').innerHTML = `Nivel: ${level} - Tiempo: ${(levelTime / 1000)}`; // Mostrar el nivel y el tiempo restante
   clearInterval(window.timer);
 
-  window.timer = setInterval(() => {
-    if (!window.gameStart) { 
-      window.gameStart = (new Date()).getTime(); 
+  window.timer = setInterval(() => { //Inicio del temporizador 
+    if (!window.gameStart) {  // Si el juego no ha comenzado 
+      window.gameStart = performance.now();
     }
-    const currentTime = (new Date()).getTime();  
+    const currentTime = performance.now(); 
     const msElapsed = currentTime - window.gameStart; // Tiempo transcurrido en milisegundos 
     const secondsElapsed = Math.round(msElapsed / 1000); // Tiempo transcurrido en segundos
     const secondsRemaining = Math.max(Math.round((levelTime / 1000) - secondsElapsed), 0); // Asegurarse de que no sea negativo 
@@ -413,7 +413,7 @@ function startNewLevel() {
       gameOverLevelMode();
       return;
     }
-  });
+  }, 1000);
 
   // Enfocar el juego para permitir escribir
   setTimeout(() => {
@@ -441,7 +441,7 @@ function gameOverLevelMode() {
     console.log("Se ejecuta la funcion gameOverLevelMode")
     clearInterval(window.timer);
     addClass(document.getElementById('game'), 'over');
-    document.getElementById('info').innerHTML = `Score: ${levelScore}`;
+    document.getElementById('info').innerHTML = `Puntaje: ${levelScore}`;
     
     // Ocultar el div game y mostrar la pantalla de fin de nivel en su lugar
     const gameDiv = document.getElementById('game');
@@ -456,7 +456,7 @@ function gameOverLevelMode() {
     levelEndScreen.style.height = gameDiv.offsetHeight + 'px';
     
     addClass(gameDiv, 'hidden');
-    document.getElementById('current-score').innerHTML = `Score: ${levelScore}`;
+    document.getElementById('current-score').innerHTML = `Puntaje: ${levelScore}`;
     levelEndScreen.style.display = 'block';
     removeClass(levelEndScreen, 'hidden');
     addClass(levelEndScreen, 'visible');
@@ -501,7 +501,7 @@ document.getElementById('next-level-button').addEventListener('click', startNext
 document.getElementById('game').addEventListener('keyup', ev => {
     const isSpace = ev.code === 'Space';
     if (isSpace) {
-        if (document.querySelector('.word.current') === null) {
+        if (document.querySelector('.word.current') === null) { // Si no hay palabra actual
             levelUp();
         } else if (checkLevelCompletion()) {
             levelUp();
