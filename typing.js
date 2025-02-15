@@ -4,11 +4,11 @@ const btnLogin = document.getElementById('btn-login');
 const juego = document.getElementById('juego');
 
 // Agregar evento al botón de login
-btnLogin.addEventListener('click', (e) => {
+btnLogin.addEventListener('click', (e) => { // Cada vez que presiono el boton de login
   e.preventDefault(); // Evitar que se envíe el formulario
-  const username = inputUsername.value;
+  const username = inputUsername.value; //Obtengo valor del unsername
   document.getElementById('username-display').textContent = username; // Mostrar el nombre de usuario en la pantalla>ZZ
-  if (username.length >= 6 && username.length <= 16) {
+  if (username.length >= 6 && username.length <= 16) { // Si el nombre de usuario tiene entre 6 y 16 caracteres
     localStorage.setItem('username', username); // Guardar el nombre de usuario en el almacenamiento local
     formLogin.style.display = 'none'; // Ocultar el formulario de login
     completo.style.display = 'block'; // Mostrar el juego
@@ -34,7 +34,7 @@ const audioFiles = [
   './audios/audio5.mp3',
 ]
 
-const wordsPortuguese = 'o relogio cantava cancaoes de papel enquanto as nuvens discutiam sobre o preco das sandias invisiveis um peixe com chapeu de bolinhas tentava abrir uma porta que nunca existiu mas o vento sussurrava segredos de cores no topo de uma montanha plana os sapatos dancavam com entusiasmo sobre uma poca de fogo frio os caracois velozes apostavam corridas contra sombras distraidas enquanto uma arvore dormindo sonhava em voar as palavras derretidas caiam do ceu como chuva de tinta e um espelho sem reflexo perguntava por que os guarda chuvas nao sabiam nadar no ar'.split(' ');
+const wordsPortuguese = 'o relogio cantava cancaoes de papel enquanto as nuvens discutiam sobre o preco das sandias invisiveis um peixe com chapeu de bolinhas tentava abrir uma porta que nunca existiu mas o vento sussurrava segredos de cores no topo de uma montanha plana os sapatos dancavam com entusiasmo sobre uma poca de fogo frio os caracois velozes apostavam corridas contra sombras distraidas enquanto uma arvore dormindo sonhava em voar as palavras derretidas caiam do ceu como chuva de tinta e um espelho sem reflexo perguntava por que os guarda chuvas nao sabiam nadar no ar'.split(' '); //split divide el string en un array
 const wordsEnglish = words;
 const wordsSpanish = 'el reloj cantaba canciones de papel mientras las nubes discutian sobre el precio de las sandias invisibles un pez con sombrero de lunares intentaba abrir una puerta que nunca existio pero el viento le susurraba secretos de colores en la cima de una montaña plana los zapatos bailaban con entusiasmo sobre un charco de fuego frio los caracoles veloces apostaban carreras contra sombras distraidas mientras un arbol dormido soñaba con volar las palabras derretidas caian del cielo como lluvia de tinta y un espejo sin reflejo preguntaba por que los paraguas no sabian nadar en el aire'.split(' ');
 
@@ -87,8 +87,8 @@ function playClickSound(){
 /*FUNCIONES PARA CREAR Y ELIMINAR CLASES */
 
 function addClass(el, name) {
-  el.classList.add(name);
-}
+  el.classList.add(name); //Agrega una clase a un elemento 
+} 
 function removeClass(el, name) {
   el.className = el.className.replace(name, '');
 }
@@ -104,6 +104,9 @@ function randomWord() {
 function formatWord(word) {
   return `<div class="word"><span class="letter">${word.split('').join('</span><span class="letter">')}</span></div>`; //split divide el string en un array y join lo une con un string 
 }
+//COMO FUNCIONA?
+//"Hola".split('') → ["H", "o", "l", "a"].
+//<span class="letter">H</span><span class="letter">o</span><span class="letter">l</span><span class="letter">a</span>
 
 
 function newGame() {
@@ -124,7 +127,7 @@ function newGame() {
   // Reiniciar estado
   addClass(document.querySelector('.word'), 'current');
   addClass(document.querySelector('.letter'), 'current');
-  document.getElementById('info').innerHTML = (gameTime / 1000) + '';
+  document.getElementById('info').innerHTML = (gameTime / 1000) + ''; //Mostrar el tiempo de juego en el div info 
 
   // Reiniciar variables globales
   clearInterval(window.timer);
@@ -156,17 +159,17 @@ function newGameWPM() {
 
 
 function getWpm() {
-  const words = [...document.querySelectorAll('.word')]; //Selecciona todos los elementos con la clase .word ¿Por que [...]? Lo convierte en un array real
+  const words = [...document.querySelectorAll('.word')]; //Selecciona todos los elementos con la clase .word ¿Por que [...]? Lo convierte en un array real. Devuelve NODELIST
   const lastTypedWord = document.querySelector('.word.current'); //Encuentor la ultima palabra
   const lastTypedWordIndex = words.indexOf(lastTypedWord) + 1; //obtengo el indice de la ultima palabra
   const typedWords = words.slice(0, lastTypedWordIndex); //obtengo todas las palabras que se escribieron 
   const correctWords = typedWords.filter(word => { 
-    const letters = [...word.children]; 
+    const letters = [...word.children];//Obtengo todas las letras de la palabra 
     const incorrectLetters = letters.filter(letter => letter.className.includes('incorrect'));
     const correctLetters = letters.filter(letter => letter.className.includes('correct'));
     return incorrectLetters.length === 0 && correctLetters.length === letters.length;
   });
-  return correctWords.length / gameTime * 60000;
+  return correctWords.length / gameTime * 60000; // Devuelve las palabras correctas por minuto
 }
 
 
@@ -256,6 +259,7 @@ document.getElementById('game').addEventListener('keyup', ev => { // Evento para
   const currentWord = document.querySelector('.word.current'); // Obtiene la palabra actual
   const currentLetter = document.querySelector('.letter.current'); // Obtiene la letra actual 
   const expected = currentLetter?.innerHTML || ' '; //encadenamiento opcional si currentLetter es null o undefined devuelve un espacio en blanco 
+  //Si currentLetter?.innerHTML devuelve undefined o una cadena vacía (''), el OR lo reemplaza con ' ' (un espacio en blanco).
   const isLetter = key.length === 1 && key !== ' '; // Verifica si la tecla presionada es una letra y no un espacio 
   const isSpace = key === ' '; // Verifica si la tecla presionada es un espacio
   const isBackspace = key === 'Backspace'; // Verifica si la tecla presionada es un retroceso 
@@ -267,7 +271,7 @@ document.getElementById('game').addEventListener('keyup', ev => { // Evento para
 
   console.log({key,expected}); 
 
-  if (!window.timer && isLetter) {
+  if (!window.timer && isLetter) { //Si no hay un temporizador y la tecla presionada es una letra 
     window.timer = setInterval(() => { 
       if (!window.gameStart) { //Si no hay un tiempo de inicio
         window.gameStart = performance.now(); //Obtiene el tiempo actual en milisegundos 
